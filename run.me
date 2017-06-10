@@ -1,0 +1,3 @@
+docker stop examp1
+docker rm examp1
+docker run --name examp1 -v "$PWD":/usr/share/nginx/html -v "$PWD"/nginx.conf:/etc/nginx.conf -p 8080:80 nginx
