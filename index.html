@@ -2,18 +2,20 @@
 <html>
 <head>
     <meta charset='utf-8' />
-    <title></title>
-    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.js'></script>
-    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.38.0/mapbox-gl.css' rel='stylesheet' />
+    <title>James Golf National</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css"
+      integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw=="
+      crossorigin=""/>
     <style>
         body { margin:0; padding:0; }
-        #map { position:absolute; top:0; bottom:0; width:100%; }
+        #mapid { height: 480px; }
     </style>
 </head>
 <body>
-
-<style>
+  <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"
+     integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA=="
+     crossorigin=""></script>
+  <style>
 .marker {
     display: block;
     border: none;
@@ -23,104 +25,38 @@
 }
 </style>
 
-<div id='map'></div>
+<div id='mapid'></div>
 
-<script>
-mapboxgl.accessToken = 'pk.eyJ1IjoiamFtZXMtbXVndWlyYSIsImEiOiJjajNlazFjOGgwMHA3MzNvZXJqeHYwdmZwIn0.dLuxC5Fai--FHNp3W_FNYw';
+  <script>
+    accessToken = 'pk.eyJ1IjoiamFtZXMtbXVndWlyYSIsImEiOiJjajNlazFjOGgwMHA3MzNvZXJqeHYwdmZwIn0.dLuxC5Fai--FHNp3W_FNYw';
+    //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    var mymap = L.map('mapid').setView([40.654732, -74.697639], 13);
 
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.satellite',
+      accessToken: accessToken
+    }).addTo(mymap);
 
-var hole1Coords = {
-    "type": "LineString",
-    "coordinates": [
-        [-74.692720, 40.653678],
-        [-74.692860, 40.655093],
-        [-74.693523, 40.656333]
-      ]
-};
+    var marker = L.marker([40.654732, -74.697639]).addTo(mymap);
+    function onMapClick(e) {
+      alert("You clicked the map at " + e.latlng);
+    }
 
-var geojson = {
-    "type": "FeatureCollection",
-    "features": [
-        {
-            "type": "Feature",
-            "properties": {
-                "message": "Lexi Thompson",
-                "playerIcon": 'Lexi.png',
-                "iconSize": [50,50]
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-74.692520, 40.653665]
-            }
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "message": "Mi Hyang Lee",
-                "playerIcon": 'Mi_hyang_lee.png',
-                "iconSize": [50,56]
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-74.692920, 40.653665]
-            }
-        }
+    mymap.on('click', onMapClick);
 
-    ]
-};
+    var LeafIcon = L.Icon.extend({
+    		options: {
+    			iconSize:     [38, 65],
+    			iconAnchor:   [22, 94],
+    			popupAnchor:  [-3, -76]
+    		}
+    	});
+    var Mi_icon = new LeafIcon({iconUrl: './images/Mi_hyang_lee.png'});
 
-var map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/satellite-v9',
-    center: [-74.697639, 40.654732 ],
-    zoom: 16
-});
-
-map.on('load', function () {
-    map.addSource("hole1", {
-        "type": "geojson",
-        "data": {
-            "type": "Feature",
-            "properties": {},
-            "geometry": hole1Coords
-        }
-    });
-
-    map.addLayer({
-        "id": "hole1",
-        "type": "line",
-        "source": "hole1",
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round"
-        },
-        "paint": {
-            "line-color": "#FFFF00",
-            "line-width": 4
-        }
-    });
-});
-// add markers to map
-geojson.features.forEach(function(marker) {
-    // create a DOM element for the marker
-    var el = document.createElement('div');
-    el.className = 'marker';
-    //el.style.backgroundImage = 'url(https://placekitten.com/g/' + marker.properties.iconSize.join('/') + '/)';
-    el.style.backgroundImage = 'url(' + marker.properties.playerIcon + ')';
-    el.style.width = marker.properties.iconSize[0] + 'px';
-    el.style.height = marker.properties.iconSize[1] + 'px';
-
-    el.addEventListener('click', function() {
-        window.alert(marker.properties.message);
-    });
-
-    // add marker to map
-    new mapboxgl.Marker(el, {offset: [-marker.properties.iconSize[0] / 2, -marker.properties.iconSize[1] / 2]})
-    //new mapboxgl.Marker(el)
-        .setLngLat(marker.geometry.coordinates)
-        .addTo(map);
-});
-</script>
+    L.marker([40.654732, -74.697639], {icon: Mi_icon}).addTo(mymap).bindPopup("Hi Phil!")
+  </script>
 
 </body>
 </html>
