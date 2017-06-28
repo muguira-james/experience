@@ -8,7 +8,7 @@
       crossorigin=""/>
     <style>
         body { margin:0; padding:0; }
-        #mapid { height: 480px; }
+        #mapid { height: 800px; }
     </style>
 </head>
 <body>
@@ -26,18 +26,23 @@
 </style>
 
 <div id='mapid'></div>
-  <script src="./javascript/hole1Coords.js" type="text/javascript"></script>
+
+  <script src="./javascript/hole1Config.js" type="text/javascript"></script>
   <script src="./javascript/Tee.js" type="text/javascript"></script>
   <script src="./javascript/Pin.js" type="text/javascript"></script>
+  <script src="./javascript/playerdb.js" type="text/javascript"></script>
   <script>
     accessToken = 'pk.eyJ1IjoiamFtZXMtbXVndWlyYSIsImEiOiJjajNlazFjOGgwMHA3MzNvZXJqeHYwdmZwIn0.dLuxC5Fai--FHNp3W_FNYw';
     //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-    var mymap = L.map('mapid').setView([40.654732, -74.697639], 16);
+    var mymap = L.map('mapid');
+    var centerCoords = hole1Config.Features[0].geometry;
+    //console.log(centerCoords);
+    mymap.setView(centerCoords.coordinates, 18);
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
       maxZoom: 18,
-      minZoom: 14,
+      //minZoom: 14,
       id: 'mapbox.satellite',
       accessToken: accessToken
     }).addTo(mymap);
@@ -48,28 +53,71 @@
 
     mymap.on('click', onMapClick);
     // pulled in from a file
-    console.log(hole1Coords);
+    //console.log(hole1Coords);
 
     var holeStyle = { "color": "#ffff00", "weight": 2, "opacity": 0.65 };
-
-    L.geoJSON(hole1Coords, {style: holeStyle}).addTo(mymap);
+    //console.log(hole1Config);
+    L.geoJSON(hole1Config.Features[3].geometry, {style: holeStyle}).addTo(mymap);
     //L.geoJSON(Tee).addTo(mymap);
 
-    var playerIcon = L.Icon.extend({
+    var PlayerIcon = L.Icon.extend({
     		options: {
-    			iconSize:     [25, 40],
+    			iconSize:     [29, 49],
     			iconAnchor:   [-10, 0],
     			popupAnchor:  [-3, -16]
     		}
     	});
-    var Mi_icon = new playerIcon({iconUrl: './images/Mi_hyang_lee.png'});
+    //var Clyburn_icon = new playerIcon({iconUrl: './images/2016_clyburn_h---full_470x486.jpg'});
+    //var pancake_icon = new playerIcon({iconUrl: './images/FaceIcon.png'});
     //var Mi_icon = new L.Icon({iconUrl: './images/Mi_hyang_lee.png'});
 
-    L.marker([40.653678, -74.692720], {icon: Mi_icon}).addTo(mymap).bindPopup("Hi Phil!");
+    teeOccupied = 0;
+    var fairwayOccupied = 0;
+    var greenOccupied = 0;
+    playerdb.Features.forEach(function(element) {
+      console.log(element.properties.name);
+      if (element.properties.locationOnHole == 'tee') {
+        if (teeOccupied == 0) {
+          lat = hole1Config.Features[4].geometry.coordinates[0];
+          long = hole1Config.Features[4].geometry.coordinates[1];
+          teeOccupied = 1;
+        } else {
+          lat = hole1Config.Features[5].geometry.coordinates[0];
+          long = hole1Config.Features[5].geometry.coordinates[1];
+        }
+      } else if (element.properties.locationOnHole == 'fairway') {
+        if (fairwayOccupied == 0) {
+          lat = hole1Config.Features[7].geometry.coordinates[0];
+          long = hole1Config.Features[7].geometry.coordinates[1];
+          fairwayOccupied = 1;
+        } else {
+          lat = hole1Config.Features[6].geometry.coordinates[0];
+          long = hole1Config.Features[6].geometry.coordinates[1];
+        }
+      } else {
+        if (greenOccupied == 0) {
+          lat = hole1Config.Features[8].geometry.coordinates[0];
+          long = hole1Config.Features[8].geometry.coordinates[1];
+          greenOccupied = 1;
+        } else {
+          lat = hole1Config.Features[9].geometry.coordinates[0];
+          long = hole1Config.Features[9].geometry.coordinates[1];
+        }
+
+      }
+
+      element.geometry.coordinates[0] = lat;
+      element.geometry.coordinates[1] = long;
+
+      z = new PlayerIcon({iconUrl: element.properties.photo});
+      //console.log(z);
+      L.marker(element.geometry.coordinates, {icon: z}).addTo(mymap);
+    })
+    //L.marker([40.653678, -74.692720], {icon: Clyburn_icon}).addTo(mymap);
 
 
-    var Tee_icon = new TeeIcon( { iconUrl: './images/Tee.png'});
-    var Pin_icon = new PinIcon( { iconUrl: './images/Pin.png'});
+    var Tee_icon = new TeeIcon( { iconUrl: './images/Tee2.png'});
+    var Pin_icon = new PinIcon( { iconUrl: './images/Flag.png'});
 
     L.marker([40.653678, -74.692720], {icon: Tee_icon}).addTo(mymap);
     L.marker([40.656333, -74.693523], {icon: Pin_icon}).addTo(mymap);
