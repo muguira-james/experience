@@ -36,7 +36,7 @@
     //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
     var mymap = L.map('mapid');
     //console.log(centerCoords);
-    mymap.setView([40.65382, -74.69614], 15);
+    mymap.setView([40.65382, -74.69614], 16);
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
@@ -59,7 +59,7 @@
       var HoleIcon = L.icon ({
           iconUrl: icoName,
           iconAnchor: [8,12],
-          iconSize: [20,20]
+          iconSize: [30,30]
       	});
 
       L.marker(element.geometry.coordinates, { icon: HoleIcon}).addTo(mymap);
