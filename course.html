@@ -58,7 +58,8 @@
       console.log(icoName);
       var HoleIcon = L.icon ({
           iconUrl: icoName,
-          iconAnchor: [8,12]
+          iconAnchor: [8,12],
+          iconSize: [20,20]
       	});
 
       L.marker(element.geometry.coordinates, { icon: HoleIcon}).addTo(mymap);
