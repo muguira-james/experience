@@ -108,7 +108,7 @@
             iconAnchor:   [40, 42]
         });
       //console.log(z);
-      L.marker(element.geometry.coordinates, {icon: PlayerIcon}).addTo(mymap);
+      L.marker(element.geometry.coordinates, {icon: PlayerIcon}).addTo(mymap).bindPopup(element.properties.name);
     })
     //L.marker([40.653678, -74.692720], {icon: Clyburn_icon}).addTo(mymap);
 
