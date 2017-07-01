@@ -56,7 +56,7 @@ var hole1Config = {
     },
     "geometry": {
       "type": "Point",
-      "coordinates": [40.65366,  -74.69295]
+      "coordinates": [40.65375,  -74.69300]
     }
   },
   {
@@ -67,7 +67,7 @@ var hole1Config = {
     },
     "geometry": {
       "type": "Point",
-      "coordinates": [40.65366, -74.69277]
+      "coordinates": [40.65366, -74.69257]
     }
   },
   {
@@ -106,12 +106,12 @@ var hole1Config = {
   {
     "type": "Feature",
     "properties": {
-      "name": "GreenLeft",
+      "name": "GreenRight",
       "notes": "teebox: lef, right; fairway: left, right; green: left, right"
     },
     "geometry": {
       "type": "Point",
-      "coordinates": [40.65636,  -74.69338]
+      "coordinates": [40.65636,  -74.69318]
     }
   }
 
