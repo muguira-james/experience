@@ -60,13 +60,7 @@
     L.geoJSON(hole1Config.Features[3].geometry, {style: holeStyle}).addTo(mymap);
     //L.geoJSON(Tee).addTo(mymap);
 
-    var PlayerIcon = L.Icon.extend({
-    		options: {
-    			iconSize:     [80, 80],
-    			iconAnchor:   [-10, 0],
-    			popupAnchor:  [-3, -16]
-    		}
-    	});
+
     //var Clyburn_icon = new playerIcon({iconUrl: './images/2016_clyburn_h---full_470x486.jpg'});
     //var pancake_icon = new playerIcon({iconUrl: './images/FaceIcon.png'});
     //var Mi_icon = new L.Icon({iconUrl: './images/Mi_hyang_lee.png'});
@@ -104,14 +98,17 @@
           long = hole1Config.Features[9].geometry.coordinates[1];
         }
 
-      }
+      };
 
       element.geometry.coordinates[0] = lat;
       element.geometry.coordinates[1] = long;
-
-      z = new PlayerIcon({iconUrl: element.properties.photo});
+      var PlayerIcon = L.icon({
+            iconUrl: element.properties.photo,
+            iconSize:     [80, 80],
+            iconAnchor:   [40, 42]
+        });
       //console.log(z);
-      L.marker(element.geometry.coordinates, {icon: z}).addTo(mymap);
+      L.marker(element.geometry.coordinates, {icon: PlayerIcon}).addTo(mymap);
     })
     //L.marker([40.653678, -74.692720], {icon: Clyburn_icon}).addTo(mymap);
 
