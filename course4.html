@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>James Golf National</title>
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css"
+      integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw=="
+      crossorigin=""/>
+    <style>
+        body { margin:0; padding:0; }
+        #mapid { position:absolute; top:0; bottom:0; width:100%; }
+
+
+    </style>
+    <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"
+       integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA=="
+       crossorigin=""></script>
+
+    <script src="./javascript/holeLocations_2017_1.js" type="text/javascript"></script>
+    <script src="./javascript/Tee.js" type="text/javascript"></script>
+    <script src="./javascript/Pin.js" type="text/javascript"></script>
+    <script src="./javascript/playerdb.js" type="text/javascript"></script>
+    <script src="./javascript/utilities.js" type="text/javascript"></script>
+
+</head>
+<body>
+
+  <style>
+.marker {
+    display: block;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+}
+</style>
+
+<div id='mapid'></div>
+
+
+
+  <script>
+
+  var drawCourse = function() {
+
+      myFeatureGroup.clearLayers();
+      holeLatLong.Features.forEach(function(element) {
+
+      icoName = './images/' + element.properties.image;
+      //console.log(icoName);
+      var HoleIcon = L.icon ({
+          iconUrl: icoName,
+          iconAnchor: [8,35],
+          iconSize: [40,40]
+        });
+
+      marker = L.marker(element.geometry.coordinates, { icon: HoleIcon}).addTo(myFeatureGroup);
+      marker.tPhoto = element.properties.Tphoto;
+      marker.flyTo = element.properties.labelLocation;
+      marker.flagPhoto = element.properties.Flagphoto;
+      marker.tLocation = element.properties.TeeLocation;
+      //console.log(element.properties);
+      marker.geo = element.properties.layoutCoordinates.geometry;
+      marker.holeNumber = element.properties.number;
+    });
+
+
+  }
+    accessToken = 'pk.eyJ1IjoiamFtZXMtbXVndWlyYSIsImEiOiJjajNlazFjOGgwMHA3MzNvZXJqeHYwdmZwIn0.dLuxC5Fai--FHNp3W_FNYw';
+    //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    var mymap = L.map('mapid');
+    //console.log(centerCoords);
+    mymap.setView([40.65382, -74.69614], 16);
+
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+      maxZoom: 18,
+      //minZoom: 14,
+      id: 'mapbox.satellite',
+      accessToken: accessToken
+    }).addTo(mymap);
+
+    var myFeatureGroup = L.featureGroup().addTo(mymap).on("click", groupClick);
+    var testFeatureGroup = L.featureGroup().addTo(mymap);
+    var marker, test;
+
+    mymap.on('zoomstart', function(e) { console.log("found a zoom start"); });
+
+    mymap.on('zoomend', function(e) {
+      console.log("found a zoom end");
+      // myFeatureGroup.clearLayers();
+    });
+    // function onMapClick(e) {
+    //   alert("You clicked the map at " + e.latlng);
+    // }
+    //
+    // mymap.on('click', onMapClick);
+    drawCourse();
+
+
+
+    function groupClick(event) {
+      if (event.layer.holeNumber == 1) {
+        drawPlayersOnHole(holeLatLong.Features[0], myFeatureGroup, playerdb);
+      }
+      mymap.setView(event.layer.flyTo, 18);
+      drawHoleLayout(event.layer.number, event.layer.geo, event.layer.tPhoto, event.layer.flagPhoto, event.layer.flyTo, event.layer.tLocation);
+      //window.location = "http://trumpone.herokuapp.com/hole1.html"
+      //var jumpToPage = "http://localhost:8080/" +  event.layer.page;
+      //console.log(jumpToPage);
+      //window.location = jumpToPage;
+      // var holeNum = event.layer.holeNumber;
+      // drawHoleLayout(holeNum, holeLatLong);
+    }
+  </script>
+
+  <script type="text/javascript">
+
+        var pointA = [40.65382, -74.69614];   // Circle center
+        var radius = 0.1;                                      // 10km
+
+      //console.log("created the start marker");
+      var endPointB = destinationPoint(pointA, 180, radius);
+      // console.log("called des point");
+      // console.log(startMarker, endPointB);
+      var endMarker = L.marker(endPointB).addTo(testFeatureGroup).bindPopup("You Are Here");
+
+
+
+     </script>
+
+</body>
+</html>

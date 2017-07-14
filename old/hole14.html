@@ -32,7 +32,7 @@
 
 <div id='mapid'></div>
 
-  <script src="./javascript/hole1Config.js" type="text/javascript"></script>
+  <!-- <script src="./javascript/hole1Config.js" type="text/javascript"></script> -->
   <script src="./javascript/holeLocations.js" type="text/javascript"></script>
   <script src="./javascript/Tee.js" type="text/javascript"></script>
   <script src="./javascript/Pin.js" type="text/javascript"></script>
@@ -43,7 +43,7 @@
     accessToken = 'pk.eyJ1IjoiamFtZXMtbXVndWlyYSIsImEiOiJjajNlazFjOGgwMHA3MzNvZXJqeHYwdmZwIn0.dLuxC5Fai--FHNp3W_FNYw';
     //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
     var mymap = L.map('mapid');
-    var centerCoords = holeLatLong.Features[0].geometry;
+    var centerCoords = holeLatLong.Features[13].geometry;
     //console.log(centerCoords);
     mymap.setView(centerCoords.coordinates, 18);
 
@@ -62,55 +62,8 @@
     mymap.on('click', onMapClick);
 
 
-    drawHoleLayout(1, holeLatLong);
-    //console.log("here I am");
-    teeOccupied = 0;
-    var fairwayOccupied = 0;
-    var greenOccupied = 0;
-    playerdb.Features.forEach(function(element) {
-      console.log(element.properties.name);
-      if (element.properties.locationOnHole == 'tee') {
-        if (teeOccupied == 0) {
-          lat = hole1Config.Features[4].geometry.coordinates[0];
-          long = hole1Config.Features[4].geometry.coordinates[1];
-          teeOccupied = 1;
-        } else {
-          lat = hole1Config.Features[5].geometry.coordinates[0];
-          long = hole1Config.Features[5].geometry.coordinates[1];
-        }
-      } else if (element.properties.locationOnHole == 'fairway') {
-        if (fairwayOccupied == 0) {
-          lat = hole1Config.Features[7].geometry.coordinates[0];
-          long = hole1Config.Features[7].geometry.coordinates[1];
-          fairwayOccupied = 1;
-        } else {
-          lat = hole1Config.Features[6].geometry.coordinates[0];
-          long = hole1Config.Features[6].geometry.coordinates[1];
-        }
-      } else {
-        if (greenOccupied == 0) {
-          lat = hole1Config.Features[8].geometry.coordinates[0];
-          long = hole1Config.Features[8].geometry.coordinates[1];
-          greenOccupied = 1;
-        } else {
-          lat = hole1Config.Features[9].geometry.coordinates[0];
-          long = hole1Config.Features[9].geometry.coordinates[1];
-        }
-
-      };
-
-      element.geometry.coordinates[0] = lat;
-      element.geometry.coordinates[1] = long;
-      var PlayerIcon = L.icon({
-            iconUrl: element.properties.photo,
-            iconSize:     [80, 80],
-            iconAnchor:   [40, 42]
-        });
-      //console.log(z);
-      L.marker(element.geometry.coordinates, {icon: PlayerIcon}).addTo(mymap).bindPopup(element.properties.name);
-    })
-    var holeStyle = { "color": "#ffff00", "weight": 2, "opacity": 0.65 };
-    L.geoJSON(hole1Config.Features[3].geometry, {style: holeStyle}).addTo(mymap);
+    drawHoleLayout(14, holeLatLong);
+    drawPlayersAtHole(14, holeLatLong);
   </script>
 
 </body>

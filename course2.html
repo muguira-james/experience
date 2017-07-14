@@ -56,15 +56,16 @@
     }).addTo(mymap);
 
     var myFeatureGroup = L.featureGroup().addTo(mymap).on("click", groupClick);
+    var testFeatureGroup = L.featureGroup().addTo(mymap);
     var marker, test;
 
-    // mymap.on('zoomstart', function(e) { console.log("found a zoom start"); })
-    // mymap.on('zoomend', function(e) { console.log("found a zoom end"); })
-    function onMapClick(e) {
-       alert("You clicked the map at " + e.latlng);
-    }
+    mymap.on('zoomstart', function(e) { console.log("found a zoom start"); })
+    mymap.on('zoomend', function(e) { console.log("found a zoom end"); })
+    // function onMapClick(e) {
+    //   alert("You clicked the map at " + e.latlng);
+    // }
     //
-    mymap.on('click', onMapClick);
+    // mymap.on('click', onMapClick);
     holeLatLong.Features.forEach(function(element) {
 
       icoName = './images/' + element.properties.image;
@@ -90,6 +91,50 @@
     }
   </script>
 
+  <script type="text/javascript">
+        var toRad = function(n) {
+           var z = n* Math.PI / 180;
+           //console.log(n,z);
+           return z
+        }
+
+        var toDeg = function(n) {
+           return n * 180 / Math.PI;
+        }
+
+        var destinationPoint = function(latlng, brng, dist) {
+           dist = dist / 6371;
+           brng = toRad(brng);
+
+           var lat1 = toRad(latlng[0]), lon1 = toRad(latlng[1]);
+
+           //console.log(brng,latlng[0], latlng[1], lat1,lon1);
+           var lat2 = Math.asin(Math.sin(lat1) * Math.cos(dist) +
+                                Math.cos(lat1) * Math.sin(dist) * Math.cos(brng));
+
+           var lon2 = lon1 + Math.atan2(Math.sin(brng) * Math.sin(dist) *
+                                        Math.cos(lat1),
+                                        Math.cos(dist) - Math.sin(lat1) *
+                                        Math.sin(lat2));
+
+           if (isNaN(lat2) || isNaN(lon2)) return null;
+           //console.log(lat2,lon2);
+           return new L.LatLng(toDeg(lat2), toDeg(lon2));
+        }
+
+        var pointA = [40.65382, -74.69614];   // Circle center
+        var radius = 0.1;                                      // 10km
+
+      var startMarker = L.marker(pointA).addTo(testFeatureGroup).bindPopup("start");
+      //console.log("created the start marker");
+      var endPointB = destinationPoint(pointA, 180, radius);
+      console.log("called des point");
+      console.log(startMarker, endPointB);
+      var endMarker = L.marker(endPointB).addTo(testFeatureGroup).bindPopup("end");
+
+
+
+     </script>
 
 </body>
 </html>

@@ -1,6 +1,6 @@
 var TeeIcon = L.Icon.extend({
   options: {
-    iconSize: [10,10]
+    iconSize: [15,15]
   }
 }
 );
