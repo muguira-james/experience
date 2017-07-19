@@ -138,7 +138,7 @@ var drawCourse = function() {
     var HoleIcon = L.icon ({
         iconUrl: icoName,
         iconAnchor: [8,35],
-        iconSize: [40,40]
+        iconSize: [80,80]
       });
 
     marker = L.marker(element.geometry.coordinates, { icon: HoleIcon}).addTo(myCourseView);
