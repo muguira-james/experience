@@ -55,7 +55,8 @@ function drawAPlayer(location, layer, photo, name, bearing) {
           iconAnchor:   [40, 42]
       });
     //console.log(PlayerIcon, bearing);
-    L.marker(playerLocation, {icon: PlayerIcon}).addTo(layer).bindPopup(name);
+    detailplayer = L.marker(playerLocation, {icon: PlayerIcon}).addTo(layer);
+    detailplayer.info = { "photo": photo, "name": name, "location": location };
 
 }
 
