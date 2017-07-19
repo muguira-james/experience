@@ -1,30 +1,10 @@
 
-function drawHoleLayout(holeNumber, geometry, Tphoto, Flagphoto, FlagLocation, tLocation) {
-  //console.log(holeNumber + "    " + holeLatLong);
-  //console.log(holeLatLong.Features[1]);
-  var indx = holeNumber - 1;
 
-  // console.log(indx);
+function drawHoleLayout(geometry, layer) {
 
   var holeStyle = { "color": "#ffff00", "weight": 2, "opacity": 0.65 };
-  L.geoJSON(geometry, {style: holeStyle}).addTo(myFeatureGroup);
+  L.geoJSON(geometry, {style: holeStyle}).addTo(layer);
 
-
-
-  //var Tee_icon = new TeeIcon( { iconUrl: Tphoto });
-  //var Pin_icon = new PinIcon( { iconUrl: Flagphoto});
-  //console.log(geometry, tLocation);
-  //L.marker(tLocation, {icon: Tee_icon}).addTo(myFeatureGroup);
-
-  //L.marker(FlagLocation, {icon: Pin_icon}).addTo(myFeatureGroup);
-
-  // var z = new L.Marker(holeLatLong.Features[indx].properties.labelLocation, {
-  //   icon: new L.DivIcon({
-  //       className: 'my-div-icon',
-  //       iconSize: new L.Point(120,50),
-  //       html: '<h3>Hole 1: 464 Yards</h3>'
-  //     })
-  // }).addTo(mymap);
 }
 
 var toRad = function(n) {
@@ -56,44 +36,120 @@ var destinationPoint = function(latlng, brng, dist) {
    //console.log(lat2,lon2);
    return new L.LatLng(toDeg(lat2), toDeg(lon2));
 }
+function drawAPlayer(location, layer, photo, name, bearing) {
 
-function drawPlayersOnHole(holeFeature, layer, playerdb) {
+    var teeOffset = 90;
+    var fairwayOffset = 90;
+    var greenOffset = 90;
+    var startPoint ;
+    var zoomLevel = mymap.getZoom();
+
+    //console.log("zoom level = ", zoomLevel);
+    //player = playerdb.Features[playerIndex];
+
+    //console.log(startPoint, mvc);
+    playerLocation = destinationPoint(location, bearing, mvc.playerIconRadius);
+    var PlayerIcon = L.icon({
+          iconUrl: photo,
+          iconSize:     [80, 80],
+          iconAnchor:   [40, 42]
+      });
+    //console.log(PlayerIcon, bearing);
+    L.marker(playerLocation, {icon: PlayerIcon}).addTo(layer).bindPopup(name);
+
+}
+
+function positionPlayers() {
+
+  playerdb.Features.forEach(function(player) {
+
+    var bearing = 30;
+    console.log(player.properties.name);
+    if ((player.properties.currentHole >= 1) || (player.properties.currentHole <= 18)) {
+      var startPoint = holelatLong.Features[player.properties.currentHole].labelLocation;
+      var endPoint = destinationPoint(startPoint, bearing, mvc.playerIconRadius);
+      player.properties.position = "[ " + startPoint + ", " + endPoint + " ]"
+      bearing = bearing + 30;
+    };
+
+  })
+}
+
+function drawAllPlayersAtAHole(holeFeature, layer, playerdb) {
 
   var teeOffset = 90;
   var fairwayOffset = 90;
   var greenOffset = 90;
   var startPoint ;
-  var radius = 0.01;
+  var zoomLevel = mymap.getZoom();
+
+  //console.log("zoom level = ", zoomLevel);
 
   playerdb.Features.forEach(function(player) {
-    console.log(player.properties.name);
-    if (player.properties.locationOnHole == 'tee') {
-      startPoint = holeFeature.properties.TeeLocation;
-      bearing = teeOffset;
-      teeOffset = teeOffset + 180;
-    }
+    if (player.properties.currentHole == holeFeature.properties.number) {
 
-    if (player.properties.locationOnHole == 'fairway') {
-      startPoint = holeFeature.properties.labelLocation;
-      bearing = fairwayOffset;
-      fairwayOffset = fairwayOffset + 180;
-    }
+      //console.log("asked to draw player number", player.properties.number);
+      console.log(player.properties.name);
+      if (player.properties.locationOnHole == 'tee') {
+        startPoint = holeFeature.properties.TeeLocation;
+        bearing = teeOffset;
+        teeOffset = teeOffset + 180;
+      }
 
-    if (player.properties.locationOnHole == 'green') {
-      startPoint = holeFeature.properties.FlagLocation;
-      bearing = greenOffset;
-      greenOffset = greenOffset + 180;
-    }
+      if (player.properties.locationOnHole == 'fairway') {
+        startPoint = holeFeature.properties.labelLocation;
+        bearing = fairwayOffset;
+        fairwayOffset = fairwayOffset + 180;
+      }
 
-    console.log(startPoint);
-    playerLocation = destinationPoint(startPoint, bearing, radius);
-    var PlayerIcon = L.icon({
-          iconUrl: player.properties.photo,
-          iconSize:     [80, 80],
-          iconAnchor:   [40, 42]
-      });
-    console.log(PlayerIcon, bearing);
-    L.marker(playerLocation, {icon: PlayerIcon}).addTo(mymap).bindPopup(player.properties.name);
+      if (player.properties.locationOnHole == 'green') {
+        startPoint = holeFeature.properties.FlagLocation;
+        bearing = greenOffset;
+        greenOffset = greenOffset + 180;
+      }
+
+      //console.log(startPoint, mvc);
+      // playerLocation = destinationPoint(startPoint, bearing, mvc.playerIconRadius);
+      // var PlayerIcon = L.icon({
+      //       iconUrl: player.properties.photo,
+      //       iconSize:     [80, 80],
+      //       iconAnchor:   [40, 42]
+      //   });
+      // //console.log(PlayerIcon, bearing);
+      // L.marker(playerLocation, {icon: PlayerIcon}).addTo(layer).bindPopup(player.properties.name);
+      drawAPlayer(startPoint, layer, player.properties.photo, player.properties.name, bearing);
+    }
 
   })
+}
+var MVC = {
+
+  playerIconRadius: 0.02,
+  currentView: "course"
+}
+
+var drawCourse = function() {
+
+    myCourseView.clearLayers();
+    holeLatLong.Features.forEach(function(element) {
+
+    icoName = './images/' + element.properties.image;
+    //console.log(icoName);
+    var HoleIcon = L.icon ({
+        iconUrl: icoName,
+        iconAnchor: [8,35],
+        iconSize: [40,40]
+      });
+
+    marker = L.marker(element.geometry.coordinates, { icon: HoleIcon}).addTo(myCourseView);
+    marker.tPhoto = element.properties.Tphoto;
+    marker.flyTo = element.properties.labelLocation;
+    marker.flagPhoto = element.properties.Flagphoto;
+    marker.tLocation = element.properties.TeeLocation;
+    //console.log(element.properties);
+    marker.geo = element.properties.layoutCoordinates.geometry;
+    marker.holeNumber = element.properties.number;
+  });
+
+
 }
