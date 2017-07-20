@@ -36,6 +36,47 @@ var destinationPoint = function(latlng, brng, dist) {
    //console.log(lat2,lon2);
    return new L.LatLng(toDeg(lat2), toDeg(lon2));
 }
+
+function drawAllPlayers() {
+
+  var teeOffset = 90;
+  var fairwayOffset = 90;
+  var greenOffset = 90;
+  var startPoint ;
+  var zoomLevel = mymap.getZoom();
+
+  playerdb.Features.forEach(function(player) {
+    if ((player.properties.currentHole <1) || (player.properties.currentHole > 18)) {
+      console.log("drawAllPlayers: player is off the course??", player.properties.name, player.properties.currentHole);
+      return;
+    }
+    feature2DrawAround = holeLatLong.Features[(player.properties.currentHole - 1)];
+    //console.log("asked to draw player number", player.properties.number);
+    console.log(player.properties.name);
+    if (player.properties.locationOnHole == 'tee') {
+      startPoint = feature2DrawAround.properties.TeeLocation;
+      bearing = teeOffset;
+      teeOffset = teeOffset + 180;
+    }
+
+    if (player.properties.locationOnHole == 'fairway') {
+      startPoint = feature2DrawAround.properties.labelLocation;
+      bearing = fairwayOffset;
+      fairwayOffset = fairwayOffset + 180;
+    }
+
+    if (player.properties.locationOnHole == 'green') {
+      startPoint = feature2DrawAround.properties.FlagLocation;
+      bearing = greenOffset;
+      greenOffset = greenOffset + 180;
+    }
+
+    drawAPlayer(startPoint, mvc.currentView, player.properties.photo, player.properties.name, bearing);
+
+  })
+
+}
+
 function drawAPlayer(location, layer, photo, name, bearing) {
 
     var teeOffset = 90;
@@ -139,7 +180,7 @@ var drawCourse = function() {
     var HoleIcon = L.icon ({
         iconUrl: icoName,
         iconAnchor: [8,35],
-        iconSize: [80, 80]
+        iconSize: [100, 100]
       });
 
     marker = L.marker(element.geometry.coordinates, { icon: HoleIcon}).addTo(myCourseView);
