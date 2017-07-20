@@ -52,7 +52,7 @@
 
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 18,
+      maxZoom: 19,
       //minZoom: 14,
       id: 'mapbox.satellite',
       accessToken: accessToken
@@ -104,33 +104,33 @@
 
       mvc.currentView.clearLayers();
 
-      drawHoleView(event.layer.geo, mvc.currentView, event.layer.flyTo, event.layer.holeNumber);
-
+      //drawHoleView(event.layer.geo, mvc.currentView, event.layer.flyTo, event.layer.holeNumber);
+      drawAllPlayers();
     }
-    function drawHoleView(geoArray, currentView, fly2, currentHole) {
-      mymap.setView(fly2, 18);
-      //drawHoleLayout(event.layer.number, event.layer.geo, event.layer.tPhoto, event.layer.flagPhoto, event.layer.flyTo, event.layer.tLocation);
-      drawHoleLayout(geoArray, currentView);
-
-      if ((currentHole >= 1) && (currentHole <= 18)) {
-        cHole = currentHole - 1;
-        var feature2Draw = holeLatLong.Features[cHole];
-        drawAllPlayersAtAHole(feature2Draw, currentView, playerdb);
-        console.log("Hole number is __ between 1 and 18? (MVC.changeView)");
-      } else {
-        console.log("Hole number is not between 1 and 18? (MVC.changeView)");
-      }
-
-    }
+    // function drawHoleView(geoArray, currentView, fly2, currentHole) {
+    //   mymap.setView(fly2, 18);
+    //   //drawHoleLayout(event.layer.number, event.layer.geo, event.layer.tPhoto, event.layer.flagPhoto, event.layer.flyTo, event.layer.tLocation);
+    //   //drawHoleLayout(geoArray, currentView);
+    //
+    //   if ((currentHole >= 1) && (currentHole <= 18)) {
+    //     cHole = currentHole - 1;
+    //     var feature2Draw = holeLatLong.Features[cHole];
+    //     drawAllPlayersAtAHole(feature2Draw, currentView, playerdb);
+    //     console.log("Hole number is __ between 1 and 18? (MVC.changeView)");
+    //   } else {
+    //     console.log("Hole number is not between 1 and 18? (MVC.changeView)");
+    //   }
+    //
+    // }
     function changeView(event) {
-      document.getElementById('mapid').setAttribute("style","height:70%");
+      document.getElementById('mapid').setAttribute("style","height:75%");
 
-      var para = document.createElement("p");
-      var node = document.createTextNode("This is new.");
-      para.appendChild(node);
-
-      var element = document.getElementById("mapid");
-      element.appendChild(para);
+      // var para = document.createElement("p");
+      // var node = document.createTextNode("This is new.");
+      // para.appendChild(node);
+      //
+      // var element = document.getElementById("mapid");
+      // element.appendChild(para);
 
       console.log("icon view 2 click", event.layer.info);
     }
