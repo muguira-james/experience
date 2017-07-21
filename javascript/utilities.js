@@ -73,7 +73,7 @@ function drawAllPlayers() {
 
     drawAPlayer(startPoint, mvc.currentView,
       player.properties.photo,
-      player.properties.name, bearing, player.properties.currentHole, 80);
+      player.properties.name, bearing, player.properties.currentHole, 120);
 
   })
 
@@ -146,7 +146,7 @@ function drawAllPlayersAtAHole(holeFeature, layer, playerdb, iconSize) {
 }
 var MVC = {
 
-  playerIconRadius: 0.02,
+  playerIconRadius: 0.04,
   currentView: "course"
 }
 
