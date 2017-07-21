@@ -76,8 +76,8 @@
       console.log("found a zoom end", mymap.getZoom());
       mvc.zoomLevel = mymap.getZoom();
 
-      if (mvc.zoomLevel <= 15) {
-        mvc.zoomLevel = 15;
+      if (mvc.zoomLevel <= 16) {
+        mvc.zoomLevel = 16;
         mvc.currentView.clearLayers();
         mvc.currentView = myCourseView;
         mvc.currentViewID = "Course";
