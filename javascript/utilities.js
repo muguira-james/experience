@@ -71,13 +71,13 @@ function drawAllPlayers() {
       greenOffset = greenOffset + 180;
     }
 
-    drawAPlayer(startPoint, mvc.currentView, player.properties.photo, player.properties.name, bearing);
+    drawAPlayer(startPoint, mvc.currentView, player.properties.photo, player.properties.name, bearing, player.properties.currentHole);
 
   })
 
 }
 
-function drawAPlayer(location, layer, photo, name, bearing) {
+function drawAPlayer(location, layer, photo, name, bearing, currentHole) {
 
     var teeOffset = 90;
     var fairwayOffset = 90;
@@ -97,25 +97,10 @@ function drawAPlayer(location, layer, photo, name, bearing) {
       });
     //console.log(PlayerIcon, bearing);
     detailplayer = L.marker(playerLocation, {icon: PlayerIcon}).addTo(layer);
-    detailplayer.info = { "photo": photo, "name": name, "location": location };
+    detailplayer.info = { "photo": photo, "name": name, "location": location, "currentHole": currentHole };
 
 }
 
-function positionPlayers() {
-
-  playerdb.Features.forEach(function(player) {
-
-    var bearing = 30;
-    console.log(player.properties.name);
-    if ((player.properties.currentHole >= 1) || (player.properties.currentHole <= 18)) {
-      var startPoint = holelatLong.Features[player.properties.currentHole].labelLocation;
-      var endPoint = destinationPoint(startPoint, bearing, mvc.playerIconRadius);
-      player.properties.position = "[ " + startPoint + ", " + endPoint + " ]"
-      bearing = bearing + 30;
-    };
-
-  })
-}
 
 function drawAllPlayersAtAHole(holeFeature, layer, playerdb) {
 
