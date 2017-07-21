@@ -71,13 +71,15 @@ function drawAllPlayers() {
       greenOffset = greenOffset + 180;
     }
 
-    drawAPlayer(startPoint, mvc.currentView, player.properties.photo, player.properties.name, bearing, player.properties.currentHole);
+    drawAPlayer(startPoint, mvc.currentView,
+      player.properties.photo,
+      player.properties.name, bearing, player.properties.currentHole, 80);
 
   })
 
 }
 
-function drawAPlayer(location, layer, photo, name, bearing, currentHole) {
+function drawAPlayer(location, layer, photo, name, bearing, currentHole, iconSize) {
 
     var teeOffset = 90;
     var fairwayOffset = 90;
@@ -88,11 +90,11 @@ function drawAPlayer(location, layer, photo, name, bearing, currentHole) {
     //console.log("zoom level = ", zoomLevel);
     //player = playerdb.Features[playerIndex];
 
-    //console.log(startPoint, mvc);
+    console.log("drawAPlayer", iconSize);
     playerLocation = destinationPoint(location, bearing, mvc.playerIconRadius);
     var PlayerIcon = L.icon({
           iconUrl: photo,
-          iconSize:     [80, 80],
+          iconSize:     [iconSize, iconSize],
           iconAnchor:   [40, 42]
       });
     //console.log(PlayerIcon, bearing);
@@ -102,7 +104,7 @@ function drawAPlayer(location, layer, photo, name, bearing, currentHole) {
 }
 
 
-function drawAllPlayersAtAHole(holeFeature, layer, playerdb) {
+function drawAllPlayersAtAHole(holeFeature, layer, playerdb, iconSize) {
 
   var teeOffset = 90;
   var fairwayOffset = 90;
@@ -110,7 +112,7 @@ function drawAllPlayersAtAHole(holeFeature, layer, playerdb) {
   var startPoint ;
   var zoomLevel = mymap.getZoom();
 
-  //console.log("zoom level = ", zoomLevel);
+  console.log("drawAllPlayersAtAHole", iconSize);
 
   playerdb.Features.forEach(function(player) {
     if (player.properties.currentHole == holeFeature.properties.number) {
@@ -135,16 +137,9 @@ function drawAllPlayersAtAHole(holeFeature, layer, playerdb) {
         greenOffset = greenOffset + 180;
       }
 
-      //console.log(startPoint, mvc);
-      // playerLocation = destinationPoint(startPoint, bearing, mvc.playerIconRadius);
-      // var PlayerIcon = L.icon({
-      //       iconUrl: player.properties.photo,
-      //       iconSize:     [80, 80],
-      //       iconAnchor:   [40, 42]
-      //   });
-      // //console.log(PlayerIcon, bearing);
-      // L.marker(playerLocation, {icon: PlayerIcon}).addTo(layer).bindPopup(player.properties.name);
-      drawAPlayer(startPoint, layer, player.properties.photo, player.properties.name, bearing);
+      drawAPlayer(startPoint, layer,
+        player.properties.photo,
+        player.properties.name, bearing, player.properties.currentHole, iconSize);
     }
 
   })
