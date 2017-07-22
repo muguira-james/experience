@@ -104,15 +104,18 @@
 
       mvc.currentView.clearLayers();
 
-      mvc.currentView = myIconView;
-      mvc.currentViewID = "Icon";
+      mvc.currentView = myDetailView;
+      mvc.currentViewID = "detail";
 
       console.log(event)
 
       mvc.currentView.clearLayers();
 
-      //drawHoleView(event.layer.geo, mvc.currentView, event.layer.flyTo, event.layer.holeNumber);
-      drawAllPlayers();
+      var hole = event.layer.holeNumber - 1;
+      var feature2Draw = holeLatLong.Features[hole];
+      mymap.setView(event.layer.flyTo, 18);
+      drawAllPlayersAtAHole(feature2Draw, mvc.currentView, playerdb, 160);
+
     }
 
     function changeView(event) {
