@@ -1,160 +1,61 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset='utf-8' />
-    <title>James Golf National</title>
-
-
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css"
-      integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw=="
-      crossorigin=""/>
+  <head>
     <style>
-        body { margin:0; padding:0; }
-        #mapid { position:absolute; top:0; bottom:0; width:100%; }
-
-
+       #map {
+        height: 300px;
+        width: 100%;
+       }
     </style>
-    <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"
-       integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA=="
-       crossorigin=""></script>
-
-    <script src="./javascript/holeLocations_2017_1.js" type="text/javascript"></script>
-    <script src="./javascript/Tee.js" type="text/javascript"></script>
-    <script src="./javascript/Pin.js" type="text/javascript"></script>
-    <script src="./javascript/playerdb_1.js" type="text/javascript"></script>
-    <script src="./javascript/utilities.js" type="text/javascript"></script>
-
-</head>
-<body>
-
-  <!-- /*<style>
-.marker {
-    display: block;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    padding: 0;
-}
-</style>*/ -->
-
-<div id='mapid'></div>
+  </head>
+  <body>
+    <h3>My Google Maps Demo</h3>
+    <div id="map"></div>
 
 
+    <script>
+      var markersArray = [];
+      var map;
+      var mvc = {};
 
-  <script>
+    </script>
 
+    <script src="js/models/utils.js"></script>
+    <script src="js/ViewModel/ViewModel.js"></script>
+    <script src="js/ViewModel/UserViews.js"></script>
+    <script src="js/ControllerModel/ControllerModel.js"></script>
+    //
+    // the global data store. Created by other programs.
+    <script src="js/models/playerdb_1.js"></script>
+    <script src="js/models/trumpbedminster.js"></script>
+    <!-- <script src="js/models/holeLocations_2017_1.js"></script> -->
 
-    accessToken = 'pk.eyJ1IjoiamFtZXMtbXVndWlyYSIsImEiOiJjajNlazFjOGgwMHA3MzNvZXJqeHYwdmZwIn0.dLuxC5Fai--FHNp3W_FNYw';
-    //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-    var mymap = L.map('mapid');
-    //console.log(centerCoords);
-    mymap.setView([40.65382, -74.69614], 18);
+    <script>
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 19,
-      minZoom: 14,
-      id: 'mapbox.satellite',
-      accessToken: accessToken
-    }).addTo(mymap);
+        // mvc.ViewModel = new ViewModel();
 
-    var mvc = MVC;
-    var myCourseView = L.featureGroup().addTo(mymap).on("click", change2IconView);
-    var myIconView = L.featureGroup().addTo(mymap).on("click", changeView);
-    var myDetailView = L.featureGroup().addTo(mymap);
-    var myFanFeatureView = L.featureGroup().addTo(mymap);
-    var marker, test;
+      // This func needs to be here.  It is a callback!!!
+      //
+      // see the script block with the google maps key in it
 
-    mvc.currentView = myIconView;
-    mvc.currentViewID = "Icon";
-
-    mvc.zoomLevel = mymap.getZoom();
-
-    drawAllPlayers();
-    mymap.on('zoomstart', function(e) { console.log("found a zoom start"); });
-
-    mymap.on('zoomend', function(e) {
-      console.log("found a zoom end", mymap.getZoom());
-      mvc.zoomLevel = mymap.getZoom();
-
-      if (mvc.zoomLevel <= 16) {
-        mvc.zoomLevel = 15;
-        mvc.currentView.clearLayers();
-        mvc.currentView = myCourseView;
-        mvc.currentViewID = "Course";
-        document.getElementById('mapid').setAttribute("style","height:100%");
-        drawCourse()
+      //
+      function initMap() {
+        //console.log(mvc, mvc.ViewModel);
+        // mvc.ViewModel.setMapCenter({lat: 40.65382, lng: -74.69614});
+        mvc.ViewModel.setMapCenter(preferences.TrumpNationLatLng);
+        mvc.ViewModel.setCurrentView(CurrentViewId.DEFAULT_VIEW);
+        mvc.ViewModel.initMap();
+        mvc.controller.registerView();
+        mvc.ViewModel.DrawView();
       }
 
-      if (mvc.zoomLevel === 17)  {
-        mvc.currentView.clearLayers();
-        mvc.currentView = myIconView;
-        mvc.currentViewID = "Icon";
-        drawAllPlayers();
-      }
-      // myIconView.clearLayers();
-    });
 
+    </script>
 
+    <!-- <script src="js/models/utils.js"></script>  -->
 
-
-
-
-    function change2IconView(event) {
-
-      mvc.currentView.clearLayers();
-
-      mvc.currentView = myDetailView;
-      mvc.currentViewID = "detail";
-
-      console.log(event)
-
-      mvc.currentView.clearLayers();
-
-      var hole = event.layer.holeNumber - 1;
-      var feature2Draw = holeLatLong.Features[hole];
-      mymap.setView(event.layer.flyTo, 18);
-      drawAllPlayersAtAHole(feature2Draw, mvc.currentView, playerdb, 160);
-
-    }
-
-    function changeView(event) {
-      mvc.currentView.clearLayers();
-
-      mvc.currentView = myDetailView;
-      mvc.currentViewID = "detail";
-
-      //console.log(event)
-
-      mvc.currentView.clearLayers();
-
-      document.getElementById('mapid').setAttribute("style","height:75%");
-
-      var hole = event.layer.info.currentHole - 1;
-      var feature2Draw = holeLatLong.Features[hole];
-
-
-      mymap.setView(event.layer.info.location, 18);
-      drawAllPlayersAtAHole(feature2Draw, mvc.currentView, playerdb, 160);
-
-      console.log("icon view 2 click", event.layer);
-    }
-  </script>
-
-  <script type="text/javascript">
-
-        var pointA = [40.65382, -74.69614];   // Circle center
-        var radius = 0.1;                                      // 10km
-
-      //console.log("created the start marker");
-      var endPointB = destinationPoint(pointA, 180, radius);
-      // console.log("called des point");
-      // console.log(startMarker, endPointB);
-      var endMarker = L.marker(endPointB).addTo(myFanFeatureView).bindPopup("You Are Here");
-
-
-
-     </script>
-
-</body>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhUtOG4FWEnLZakSLIhcEzxvmGLJSTS04&callback=initMap&libraries=geometry">
+    </script>
+  </body>
 </html>

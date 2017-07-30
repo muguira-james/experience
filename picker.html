@@ -3,16 +3,13 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0", charset='utf-8' />
     <title>Picker</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.1.0/dist/leaflet.css"
-      integrity="sha512-wcw6ts8Anuw10Mzh9Ytw4pylW8+NAD4ch3lqm9lzAsTxg0GFeJgoAtxuCLREZSC5lUXdVyo/7yfsqFjQ4S+aKw=="
-      crossorigin=""/>
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
 
         * {
           box-sizing: border-box;
         }
-        .controls::after {
+  .controls::after {
     content: "";
     clear: both;
     display: table;
@@ -21,8 +18,8 @@
 
 
         .map {
-          width:75%;
-          height: 800px;
+          width:65%;
+          height: 600px;
           float: left;
           padding: 15px;
         }
@@ -33,16 +30,17 @@
     </style>
 </head>
 <body>
-  <script src="https://unpkg.com/leaflet@1.1.0/dist/leaflet.js"
-     integrity="sha512-mNqn2Wg7tSToJhvHcqfzLMU6J4mkOImSPTxVZAdo+lcPlk+GhZmYgACEe0x35K7YzW1zJ7XyJV/TT1MrdXvMcA=="
-     crossorigin=""></script>
 
-<h1>Current State</h1><input id="stateindicator"></input>
+
+<h1>Current State</h1>
+<input id="stateindicator"></input>
+<input id="hole_number">Hole Num:</input>
+
 <div class="w3-card-4">
 
 
 <div class="w3-container">
-<div id='mapid' class="w3-container map"></div>
+<div id='map' class="w3-container map"></div>
 
 
 
@@ -76,39 +74,85 @@
   <script>
 
     var fieldState = "tloc";
+    var mymap;
+    </script>
 
-    accessToken = 'pk.eyJ1IjoiamFtZXMtbXVndWlyYSIsImEiOiJjajNlazFjOGgwMHA3MzNvZXJqeHYwdmZwIn0.dLuxC5Fai--FHNp3W_FNYw';
-    //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
-    var mymap = L.map('mapid');
-    var centerCoords = [40.65382, -74.69614];
-    //console.log(centerCoords);
-    mymap.setView(centerCoords, 16);
+    <script>
+    function initMap() {
 
-    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-      attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
-      maxZoom: 18,
-      //minZoom: 14,
-      id: 'mapbox.satellite',
-      accessToken: accessToken
-    }).addTo(mymap);
+      //var uluru = mvc.ViewModel.getMapCenter();
+      // var uluru = this._mapCenter;
 
-    function onMapClick(e) {
-      console.log(fieldState);
-      if (fieldState != "holelayout") {
-        document.getElementById(fieldState).value = '[' + e.latlng.lat + ', ' + e.latlng.lng + ']';
-      } else {
-        var it = document.getElementById(fieldState).value;
-        if (it == "") {
-          it = it + '[' + e.latlng.lng + ', ' + e.latlng.lat + "]\n";
+      // var centerCoords = [40.65382, -74.69614];
+      var centerCoords = { lat: 40.65382, lng: -74.69614  };
+      console.log(centerCoords);
+      mymap = new google.maps.Map(document.getElementById('map'), {
+        zoom: 17,
+        center: centerCoords,
+        mapTypeId: 'satellite'
+
+      }).addListener('click', function(e) {
+
+        var geo = new google.maps.LatLng(e.latLng.lat(), e.latLng.lng())
+
+        if (fieldState != "holelayout") {
+          document.getElementById(fieldState).value = JSON.stringify(geo.toJSON());
         } else {
-          it = it + ', [' + e.latlng.lng + ', ' + e.latlng.lat + "]\n";
+          var it = document.getElementById(fieldState).value;
+          if (it == "") {
+            it = it + JSON.stringify(geo.toJSON());
+          } else {
+            it = it + ', ' + JSON.stringify(geo.toJSON()) + "\n";
+          }
+          //console.log(it);
+          document.getElementById(fieldState).value = it;
         }
-        document.getElementById(fieldState).value = it;
-      }
-      //alert("You clicked the map at " + e.latlng);
+        //alert("You clicked the map at " + e.latlng);
+      });
+
     }
 
-    mymap.on('click', onMapClick);
+    //
+    // accessToken = 'pk.eyJ1IjoiamFtZXMtbXVndWlyYSIsImEiOiJjajNlazFjOGgwMHA3MzNvZXJqeHYwdmZwIn0.dLuxC5Fai--FHNp3W_FNYw';
+    // //var mymap = L.map('mapid').setView([51.505, -0.09], 13);
+    // var mymap = L.map('mapid');
+    // var centerCoords = [40.65382, -74.69614];
+    // //console.log(centerCoords);
+    // mymap.setView(centerCoords, 16);
+    //
+    // L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+    //   attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://mapbox.com">Mapbox</a>',
+    //   maxZoom: 18,
+    //   //minZoom: 14,
+    //   id: 'mapbox.satellite',
+    //   accessToken: accessToken
+    // }).addTo(mymap);
+    //
+    // function onMapClick(e) {
+    //   console.log(e, fieldState);
+    //   if (fieldState != "holelayout") {
+    //     var geo = {};
+    //     geo.lat = e.da.y;
+    //     geo.lng = e.da.x;
+    //     document.getElementById(fieldState).value = JSON.stringify(geo);
+    //   } else {
+    //     var it = document.getElementById(fieldState).value;
+    //     if (it == "") {
+    //       it = it + JSON.stringify(geo) + "\n";
+    //     } else {
+    //       it = it + ', ' + JSON.stringify(geo) + "\n";
+    //     }
+    //     document.getElementById(fieldState).value = it;
+    //   }
+    //   //alert("You clicked the map at " + e.latlng);
+    // }
+
+    //
+    // map.addListener('click', function() {
+    //   console.log('hello');
+    // });
+
+    //map.on('click', onMapClick);
 
     var teeLoc = function() {
       fieldState = "tloc";
@@ -130,18 +174,80 @@
     }
 
     var save = function() {
+      var holeNumData = document.getElementById('hole_number').value;
       var tlocData = document.getElementById('tloc').value;
       var flocData = document.getElementById('flagloc').value;
       var llocData = document.getElementById('labelloc').value;
       var hlayout = document.getElementById('holelayout').value;
 
-      outp = "\"coordinates\": " + llocData;
-      outph = "\"TeeLocation\": " + tlocData + ",\n" + "\"FlagLocation\":" + flocData + ",\n" + "\"labelLocation\":" + llocData + ",\n" + "\"coordinates\": [\n" + hlayout + '\n]';
-      console.log(outp, outph);
-      document.getElementById('outp').value = outp + "\n" + outph
+      // outp = "\"coordinates\": " + llocData;
+      // outph = "\"TeeLocation\": " + tlocData +
+      //   ",\n" + "\"FlagLocation\":" + flocData + ",\n" +
+      //   "\"labelLocation\":" + llocData + ",\n" +
+      //   "\"coordinates\": [\n" + hlayout + '\n]';
+      //
+      // console.log(outp, outph);
+      // document.getElementById('outp').value = outp + "\n" + outph;
+
+      var t = {}
+      t.type = "Feature";
+      t.properties = {};
+      t.properties.image = "Hole" + holeNumData + ".png";
+      t.properties.page = "Hole" + holeNumData + ".html";
+      t.properties.number = holeNumData;
+      t.properties.Tphoto = "./images/Tee2.png";
+      t.properties.Flagphoto = "./images/Hole" + holeNumData + ".png";
+      t.properties.TeeLocation = JSON.stringify(JSON.parse(tlocData));
+      t.properties.FlagLocation = JSON.stringify(JSON.parse(flocData));
+      t.properties.labelLocation = JSON.stringify(JSON.parse(llocData));
+      t.properties.LayoutCoordinates = {};
+      t.properties.LayoutCoordinates.type = "Feature";
+      t.properties.LayoutCoordinates.properties = {};
+      t.properties.LayoutCoordinates.properties.name = "LineCoordinates";
+      t.properties.LayoutCoordinates.geometry = {};
+      t.properties.LayoutCoordinates.geometry.type = "LineString";
+      t.properties.LayoutCoordinates.geometry.coordinates = [ hlayout ];
+
+      var outp = JSON.stringify(t);
+      console.log("------>",outp);
+      document.getElementById('outp').value = outp;
+//       {
+//           "type": "Feature",
+//           "properties": {
+//             "image": "Hole1.png",
+//             "page": "hole1.html",
+//             "number": 1,
+//             "Tphoto": "./images/Tee2.png",
+//             "Flagphoto": "./images/Hole1.png",
+//             "TeeLocation": { lat: 40.65206663043972, lng: -74.694060087204},
+//             "FlagLocation":{ lat: 40.656551481511315, lng: -74.69495058059694},
+//             "labelLocation":{ lat: 40.654988736412314, lng: -74.69415664672853},
+//             "layoutCoordinates": {
+//               "type": "Feature",
+//               "properties": {
+//                 "name": "lineCoordinates"
+//               },
+//               "geometry": {
+//                 "type": "LineString",
+//                 "coordinates": [
+// {lat: 40.652050350939355, lng: -74.69408154487611},
+// {lat: 40.65475269360601, lng: -74.69411373138429},
+// { lat: 40.6565107854885, lng: -74.694929122924827}
+//                   ]
+//               }
+//             }
+//           },
+//           "geometry": {
+//             "type": "Point",
+//             "coordinates": { lat: 40.65450037106201, lng:-74.69411373138429}
+//           }
+//       },
     }
 
 
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhUtOG4FWEnLZakSLIhcEzxvmGLJSTS04&callback=initMap&libraries=geometry">
   </script>
 
 </body>
