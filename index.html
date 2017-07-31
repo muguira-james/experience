@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0", charset='utf-8' />
-    <title>KOutlinerK</title>
+    <title>Outliner</title>
       <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <style>
 
@@ -85,7 +85,7 @@
     </script>
 
 
-    <script src="trumpbedminster.js"></script>
+    <script src="js/models/trumpbedminster.js"></script>
     <script>
     function initMap() {
 
@@ -103,9 +103,9 @@
       })
 
       poly = new google.maps.Polyline({
-          strokeColor: '#000000',
+          strokeColor: '#FFFFFFFF',
           strokeOpacity: 1.0,
-          strokeWeight: 3
+          strokeWeight: 1
         });
         poly.setMap(mymap);
 
@@ -249,7 +249,8 @@
 
   </script>
   <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAhUtOG4FWEnLZakSLIhcEzxvmGLJSTS04&callback=initMap&libraries=drawing">
+    // you need your own key
+    src="https://maps.googleapis.com/maps/api/js?key=AI&callback=initMap&libraries=drawing">
   </script>
 
 </body>
