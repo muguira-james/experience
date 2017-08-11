@@ -2,19 +2,29 @@
 <html>
   <head>
     <style>
-       #map {
-        height: 600px;
-        width: 100%;
-       }
+    html, body, #mapid {
+       width: 1000px;
+       height: 100%;
+       margin: 0;
+       padding: 0;
+      }
+      #mapid {
+       position: relative;
+
+      }
+      /*body { margin:0; padding:0; width: 100%; height: 100% }
+      #mapid { position:absolute; top:0; bottom:0 right: 0; left: 0 }*/
     </style>
   </head>
   <body>
-    <h3>My Google Maps Demo</h3>
-    <div id="map"></div>
+
+
+    <div id="mapid"></div>
 
 
     <script>
       var markersArray = [];
+      var layersArray = [];
       var map;
       var mvc = {};
 
@@ -24,11 +34,13 @@
     <script src="js/ViewModel/ViewModel.js"></script>
     <script src="js/ViewModel/UserViews.js"></script>
     <script src="js/ControllerModel/ControllerModel.js"></script>
-    //
-    // the global data store. Created by other programs.
+
     <script src="js/models/playerdb_1.js"></script>
     <script src="js/models/trumpbedminster.js"></script>
     <!-- <script src="js/models/holeLocations_2017_1.js"></script> -->
+    <!-- <p id="here">
+      //
+    </p> -->
 
     <script>
 
@@ -38,11 +50,14 @@
       function initMap() {
         //console.log(mvc, mvc.ViewModel);
         // mvc.ViewModel.setMapCenter({lat: 40.65382, lng: -74.69614});
+        console.log(preferences);
         mvc.ViewModel.setMapCenter(preferences.TrumpNationLatLng);
         mvc.ViewModel.setCurrentView(CurrentViewId.DEFAULT_VIEW);
         mvc.ViewModel.initMap();
         preferences.markerIconAnchor = new google.maps.Point(1, 39);
         preferences.markerIconScaledSize = new google.maps.Size(50,50);
+        map.setZoom(17);
+        mvc.ViewModel.setZoomLevel(17);
         mvc.controller.registerView();
         mvc.ViewModel.DrawView();
       }

@@ -6,7 +6,7 @@ var playerdb = {
       "properties": {
 
         "name": "Holly Clyburn",
-        "photo": "./images/2016_clyburn_h---full_470x486.jpg",
+        "photo": "./images/Player14.png",
         "currentHole": 1,
         "locationOnHole": "tee",
         "position": [42.0, -74.0]
@@ -18,7 +18,7 @@ var playerdb = {
         "properties": {
 
           "name": "Brooke Pancake",
-          "photo": "./images/pancake_b466607988_620x650px.png",
+          "photo": "./images/Player13.png",
           "currentHole": 1,
           "locationOnHole": "tee",
           "position": [42.0, -74.0]
@@ -29,7 +29,7 @@ var playerdb = {
         "properties": {
 
           "name": "Cheyenne Woods",
-          "photo": "./images/cheyenne-woods_620x650_bio.png",
+          "photo": "./images/Player12.png",
           "currentHole": 1,
           "locationOnHole": "fairway",
           "position": [42.0, -74.0]
@@ -40,7 +40,7 @@ var playerdb = {
       "properties": {
 
         "name": "Katie Burnett",
-        "photo": "./images/burnett-katie-hs-276x273.png",
+        "photo": "./images/Player10.png",
         "currentHole": 1,
         "locationOnHole": "fairway",
         "position": [42.0, -74.0]
@@ -164,7 +164,7 @@ var playerdb = {
       "name": "Player10",
       "photo": "./images/Player10.png",
       "currentHole": 16,
-      "locationOnHole": "green",
+      "locationOnHole": "tee",
       "position": [42.0, -74.0]
     }
     },
@@ -194,7 +194,7 @@ var playerdb = {
       "name": "Player13",
       "photo": "./images/Player13.png",
       "currentHole": 8,
-      "locationOnHole": "green",
+      "locationOnHole": "tee",
       "position": [42.0, -74.0]
     }
     },
@@ -204,7 +204,7 @@ var playerdb = {
       "name": "Player14",
       "photo": "./images/Player14.png",
       "currentHole": 8,
-      "locationOnHole": "green",
+      "locationOnHole": "fairway",
       "position": [42.0, -74.0]
     }
     },

@@ -6,7 +6,7 @@ mvc.ViewModel = {
     _zoomLevel: 14,
     getZoomLevel: function() { return this._zoomLevel; },
     setZoomLevel: function(z) {
-      if ((z > 14) && (z < 18)) {
+      if ((z > 14) && (z < 21)) {
           this._zoomLevel = z;
       }
     },
@@ -17,6 +17,7 @@ mvc.ViewModel = {
     getPlayerIconRadius: function() {
       return this.playerIconRadius;
     },
+    setPlayIconRadius: function(r) {},
 
     // lat lng of the center of the map
     _mapCenter: {},
@@ -86,28 +87,59 @@ mvc.ViewModel = {
       // var uluru = this._mapCenter;
       var uluru = this.getMapCenter();
 
-      map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 14,
+      map = new google.maps.Map(document.getElementById('mapid'), {
+        zoom: 15,
         mapTypeId: 'satellite',
-        center: uluru
+        center: uluru,
+        minZoom: 15,
+        maxZoom: 20
       });
 
-      var it = CurrentViewId.DEFAULT_VIEW;
-      var co = CurrentViewId.properties[it].code;
-
-      console.log(it, co);
+      // // this is our gem
+      // google.maps.event.addDomListener(window, "resize", function() {
+      //     var center = map.getCenter();
+      //     google.maps.event.trigger(map, "resize");
+      //     map.setCenter(center);
+      // });
     },
 
     clickFunc: function (evt) {
       console.log(evt);
     },
 
-    addMarker: function (latlng, id) {
+    addFlag: function(latlng, id) {
+      pixelSize = 40;
+      // var zoom = map.getZoom();
+      // relativePixelSize = Icon2ZoomSize(zoom);
+      //console.log("Rel Pix", relativePixelSize);
       var image = {
         url: id.photo,
         // size: new google.maps.Size(400, 320),
-        anchor: new google.maps.Point(1, 39),
-        scaledSize: new google.maps.Size(40,40)
+        anchor: new google.maps.Point(1, 19),
+        scaledSize: new google.maps.Size(pixelSize,pixelSize)
+      }
+
+      var flag = new google.maps.Marker({
+        position: latlng,
+        icon: image,
+        map: map
+      });
+      mvc.controller.registerFlag(flag, id);
+      markersArray.push(flag);
+      //console.log("addMarker",latlng);
+
+    },
+
+    addPlayer: function (latlng, id) {
+      pixelSize = 60;
+      var zoom = map.getZoom();
+      relativePixelSize = Icon2ZoomSize(zoom);
+      //console.log("Rel Pix", relativePixelSize);
+      var image = {
+        url: id.photo,
+        // size: new google.maps.Size(400, 320),
+        anchor: new google.maps.Point(1, 59),
+        scaledSize: new google.maps.Size(relativePixelSize,relativePixelSize)
       }
 
       var marker = new google.maps.Marker({
