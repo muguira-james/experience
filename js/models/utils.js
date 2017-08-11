@@ -35,7 +35,16 @@ destinationPoint = function(latlng, brng, dist) {
    return pt;
 };
 
-
+var Icon2ZoomSize = function(z) {
+  switch(z) {
+    case 14: { return 60; break; }
+    case 15: { return 65; break; }
+    case 16: { return 70; break; }
+    case 17: { return 75; break; }
+    case 18: { return 80; break; }
+    case 19: { return 85; break; }ß
+  }
+};
 var computeBounds4Hole = function(c) {
   var minLat = 1000, maxLat = -1000, minLng = 1000, maxLng = -1000;
   for (j=0; j<c.length; j++) {
@@ -53,6 +62,7 @@ var computeBounds4Hole = function(c) {
     }
   }
   //console.log(minLat.toPrecision(8), maxLat.toPrecision(8), minLng.toPrecision(8), maxLng.toPrecision(8));
+
   var mm_lat, mn_lng, mx_lat, mx_lng;
   mn_lat = minLat - 0.0007;
   mx_lat = maxLat + 0.0007;
@@ -68,16 +78,6 @@ var computeBounds4Hole = function(c) {
   return m;
 };
 
-var Icon2ZoomSize = function(z) {
-  switch(z) {
-    case 14: { return 60; break; }
-    case 15: { return 65; break; }
-    case 16: { return 70; break; }
-    case 17: { return 75; break; }
-    case 18: { return 80; break; }
-    case 19: { return 85; break; }ß
-  }
-}
 var CurrentViewId = {
   COURSE_VIEW: 0,
   DEFAULT_VIEW: 1,
