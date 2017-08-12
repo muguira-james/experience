@@ -853,7 +853,7 @@ var holeLatLong = {
       }
   ]
   },
-  "holeZoomLevel": 19,"image":"Hole6.png","page":"Hole6.html","number":"6","Tphoto":"./images/Tee2.png","Flagphoto":"./images/Hole6.png","TeeLocation":"{\"lat\":40.66125811793991,\"lng\":-74.70344781891981}","FlagLocation":"{\"lat\":40.66146972192777,\"lng\":-74.69881296174208}","labelLocation":"{\"lat\":40.66183595801276,\"lng\":-74.70056176201979}","LayoutCoordinates":{"type":"Feature","properties":{"name":"LineCoordinates"},"geometry":{"type":"LineString","coordinates":["{\"lat\":40.661249979311584,\"lng\":-74.70343709008375}, {\"lat\":40.66193362062914,\"lng\":-74.70022916810194}, {\"lat\":40.661477860529274,\"lng\":-74.69884514825026}"]}}}},
+  "holeZoomLevel": 18,"image":"Hole6.png","page":"Hole6.html","number":"6","Tphoto":"./images/Tee2.png","Flagphoto":"./images/Hole6.png","TeeLocation":"{\"lat\":40.66125811793991,\"lng\":-74.70344781891981}","FlagLocation":"{\"lat\":40.66146972192777,\"lng\":-74.69881296174208}","labelLocation":"{\"lat\":40.66183595801276,\"lng\":-74.70056176201979}","LayoutCoordinates":{"type":"Feature","properties":{"name":"LineCoordinates"},"geometry":{"type":"LineString","coordinates":["{\"lat\":40.661249979311584,\"lng\":-74.70343709008375}, {\"lat\":40.66193362062914,\"lng\":-74.70022916810194}, {\"lat\":40.661477860529274,\"lng\":-74.69884514825026}"]}}}},
 {"type":"Feature","properties":{
   "InnerMask": {
     "coordinates":
