@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Trump National Bedminster 2017</title>
+    <style>
+    html, body, #mapid {
+       width: 1000px;
+       height: 100%;
+       margin: 0;
+       padding: 0;
+      }
+      #mapid {
+       position: relative;
+
+      }
+      /*body { margin:0; padding:0; width: 100%; height: 100% }
+      #mapid { position:absolute; top:0; bottom:0 right: 0; left: 0 }*/
+    </style>
+  </head>
+  <body>
+
+
+    <div id="mapid"></div>
+
+
+    <script>
+      var markersArray = [];
+      var layersArray = [];
+      var map;
+      var mvc = {};
+
+    </script>
+
+    <script src="js/models/utils.js"></script>
+    <script src="js/ViewModel/ViewModel.js"></script>
+    <script src="js/ViewModel/UserViews.js"></script>
+    <script src="js/ControllerModel/ControllerModel.js"></script>
+
+    <script src="js/models/playerdb_1.js"></script>
+    <script src="js/models/trumpbedminster.js"></script>
+    <!-- <script src="js/models/holeLocations_2017_1.js"></script> -->
+    <!-- <p id="here">
+      //
+    </p> -->
+
+    <script>
+
+
+
+      //
+      function initMap() {
+        var useragent = navigator.userAgent;
+        var mapdiv = document.getElementById("map");
+
+        if (useragent.indexOf('iPhone') != -1 || useragent.indexOf('Android') != -1 ) {
+         //mapdiv.style.width = '100%';
+         //mapdiv.style.height = '100%';
+         console.log("In browser");
+        } else {
+          console.log("In phone");
+         //mapdiv.style.width = '600px';
+         //mapdiv.style.height = '800px';
+        }
+        console.log(preferences);
+        mvc.ViewModel.setMapCenter(preferences.TrumpNationLatLng);
+        mvc.ViewModel.setCurrentView(CurrentViewId.DEFAULT_VIEW);
+        mvc.ViewModel.initMap();
+        preferences.markerIconAnchorSize = new google.maps.Point(1, preferences.markerIconAnchor);
+        preferences.markerIconScaledSize = new google.maps.Size(preferences.markerIcon, preferences.markerIcon);
+        var id = { "photo": "./images/Fan.png" }
+        mvc.ViewModel.addFan(preferences.TrumpNationLatLng, id)
+        map.setZoom(18);
+        mvc.ViewModel.setZoomLevel(18);
+        mvc.controller.registerView();
+        mvc.ViewModel.DrawView();
+      }
+
+
+      // console.log(JSON.stringify(holeLatLong,null, 4));
+    </script>
+
+    <!-- <script src="js/models/utils.js"></script>  -->
+
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg2L3FSio2Ta-n-9L3sCMsBYziMflOFkY&callback=initMap&libraries=geometry">
+  </script>
+  </body>
+</html>
