@@ -152,6 +152,24 @@ mvc.ViewModel = {
      //console.log("addMarker",latlng);
    },
 
+   addFan: function (latlng, id) {
+     //pixelSize = preferences.markerIconScaled;
+     //var zoom = map.getZoom();
+     //relativePixelSize = Icon2ZoomSize(zoom);
+     //console.log("Rel Pix", pixelSize);
+     var image = {
+       url: id.photo,
+     }
+
+     var fanMarker = new google.maps.Marker({
+       position: latlng,
+       icon: image,
+       map: map
+     });
+    //  mvc.controller.playerRegister(playerMarker, id);
+    //  markersArray.push(playerMarker);
+     //console.log("addMarker",latlng);
+   },
    // removes overlays from the map
    clearOverlays: function () {
      if (markersArray) {

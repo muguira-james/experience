@@ -37,12 +37,12 @@ destinationPoint = function(latlng, brng, dist) {
 
 var Icon2ZoomSize = function(z) {
   switch(z) {
-    case 14: { return 60; break; }
-    case 15: { return 65; break; }
-    case 16: { return 70; break; }
-    case 17: { return 75; break; }
-    case 18: { return 80; break; }
-    case 19: { return 85; break; }ß
+    case 14: { return 130; break; }
+    case 15: { return 125; break; }
+    case 16: { return 120; break; }
+    case 17: { return 115; break; }
+    case 18: { return 110; break; }
+    case 19: { return 100; break; }ß
   }
 };
 var computeBounds4Hole = function(c) {
