@@ -131,7 +131,7 @@ mvc.ViewModel.zoomToPlayer = function(drawThisHole) {
  var holeFeature = holeLatLong.Features[(drawThisHole - 1)];
  map.setZoom(19);
  mvc.ViewModel.setZoomLevel(19);
- map.panTo(JSON.parse(holeFeature.properties.FlagLocation));
+ //map.panTo(JSON.parse(holeFeature.properties.FlagLocation));
 }
 
 mvc.ViewModel.drawFlags = function() {
