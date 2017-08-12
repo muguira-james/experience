@@ -108,14 +108,14 @@ mvc.ViewModel = {
    },
 
    addFlag: function(latlng, id) {
-     pixelSize = 50;
+     pixelSize = preferences.flagSize;
      // var zoom = map.getZoom();
      // relativePixelSize = Icon2ZoomSize(zoom);
      //console.log("Rel Pix", relativePixelSize);
      var image = {
        url: id.photo,
        // size: new google.maps.Size(400, 320),
-       anchor: new google.maps.Point(1, 24),
+       anchor: new google.maps.Point(1, preferences.flagAnchorPoint),
        scaledSize: new google.maps.Size(pixelSize,pixelSize)
      }
 
@@ -131,14 +131,14 @@ mvc.ViewModel = {
    },
 
    addPlayer: function (latlng, id) {
-     pixelSize = 60;
+     pixelSize = preferences.markerIconScaled;
      var zoom = map.getZoom();
      relativePixelSize = Icon2ZoomSize(zoom);
-     //console.log("Rel Pix", relativePixelSize);
+     console.log("Rel Pix", pixelSize);
      var image = {
        url: id.photo,
        // size: new google.maps.Size(400, 320),
-       anchor: new google.maps.Point(1, 59),
+       anchor: preferences.markerIconAnchorSize,
        scaledSize: new google.maps.Size(relativePixelSize,relativePixelSize)
      }
 

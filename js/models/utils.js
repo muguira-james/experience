@@ -102,5 +102,9 @@ var preferences = {
   "AusyDemo": {lat: -25.363, lng: 131.044},
   "iconSize": 12,
   "currentHole2Draw": 1,
-  "currentLocationHole": 1
+  "currentLocationHole": 1,
+  "flagSize": 90,
+  "flagAnchorPoint": 45,
+  "markerIconAnchor": 119,
+  "markerIconScaled": 130
 }
