@@ -91,6 +91,7 @@ mvc.ViewModel = {
        zoom: 15,
        mapTypeId: 'satellite',
        center: uluru,
+       mapTypeControl: false,
        minZoom: 15,
        maxZoom: 20
      });
