@@ -59,7 +59,7 @@ mvc.controller = {
    mvc.ViewModel.zoomToHole(infoObject.currentHole);
    console.log("pref hole 2 draw", preferences.currentHole2Draw)
    mvc.ViewModel.drawAllPlayersAtAHole(infoObject.currentHole);
-   mvc.ViewModel.drawFlags();
+   mvc.ViewModel.drawAFlag(infoObject.currentHole);
    mvc.ViewModel.zeeLoc(infoObject.currentHole);
  },
 

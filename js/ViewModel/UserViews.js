@@ -154,6 +154,25 @@ mvc.ViewModel.drawFlags = function() {
 });
 },
 
+
+mvc.ViewModel.drawAFlag = function(flag2Draw) {
+ var ho = 0;
+ var holeFeature = holeLatLong.Features[(flag2Draw - 1)];
+
+ var bearing = 0;
+ var id = {
+   "photo": holeFeature.properties.Flagphoto,
+   "name": holeFeature.properties.number,
+   "location": JSON.parse(holeFeature.properties.FlagLocation),
+   "currentHole": holeFeature.properties.number,
+   "bearing": bearing,
+   "holeZoomLevel": holeFeature.properties.holeZoomLevel,
+   "holeType2Draw": CurrentViewId.HOLE_VIEW
+ }
+   //console.log( id);
+   mvc.ViewModel.addFlag(id.location, id);
+},
+
 mvc.ViewModel.drawCourse = function() {
 
    //console.log("in drawCourse");
