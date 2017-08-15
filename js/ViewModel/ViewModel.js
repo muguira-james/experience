@@ -1,8 +1,12 @@
 
-
+/**
+* the global mvc object: mvc hold ViewModel and ControllerModel
+*/
 mvc.ViewModel = {
 
-   // _zoomLevel is an integer between 14 and 18
+   /**
+   *  _zoomLevel is an integer between 14 and 18
+   */
    _zoomLevel: 14,
    getZoomLevel: function() { return this._zoomLevel; },
    setZoomLevel: function(z) {
@@ -28,6 +32,9 @@ mvc.ViewModel = {
 
    // holds the current view.  Views should be draw from the
    // info contained in the model dir
+   /**
+   * the current view is a var defined in utils. This does not define "hole view"??
+   */
    _currentViewId: CurrentViewId.DEFAULT_VIEW,
    getCurrentView: function() {
      return this._currentViewId;
@@ -54,10 +61,18 @@ mvc.ViewModel = {
      }
    },
 
+   /**
+   * was used to simply update the view.  Found that I needed more control over the state of the view
+   * This is used in a few places.  In general, I've just started doing the setup for a view and calling
+   * it (see DrawCourseView or the actions in the controller)
+   */
    update: function() {
      mvc.ViewModel.DrawView();
    },
 
+   /**
+   * figure out which is the right view and draw it
+   */
    DrawView: function() {
 
      var v = this.getCurrentView();
@@ -80,7 +95,11 @@ mvc.ViewModel = {
      }
    },
 
-   // creates the google map instance
+   /**
+    *  creates the google map instance
+    *
+    * creates the google map object
+    */
    initMap: function() {
 
      //var uluru = mvc.ViewModel.getMapCenter();
@@ -96,6 +115,9 @@ mvc.ViewModel = {
        maxZoom: 20
      });
 
+     /* the following code may not be needed. I was experiementing with
+     * catching map div resize events
+     */
      // // this is our gem
      // google.maps.event.addDomListener(window, "resize", function() {
      //     var center = map.getCenter();
@@ -104,10 +126,14 @@ mvc.ViewModel = {
      // });
    },
 
+   // just a test function not used
    clickFunc: function (evt) {
      console.log(evt);
    },
 
+   /**
+   * draw a flag on the map and make it so I can delete it later (markersArray.push())
+   */
    addFlag: function(latlng, id) {
      pixelSize = preferences.flagSize;
      // var zoom = map.getZoom();
@@ -125,12 +151,15 @@ mvc.ViewModel = {
        icon: image,
        map: map
      });
+     // set an event listerner, if somebody clicks on this flag
+     // jump to "hole View"
      mvc.controller.registerFlag(flag, id);
      markersArray.push(flag);
-     //console.log("addMarker",latlng);
-
    },
 
+   /**
+   * add a player icon (ie. marker)  save it so I can delete it later
+   */
    addPlayer: function (latlng, id) {
      pixelSize = preferences.markerIconScaled;
      var zoom = map.getZoom();
@@ -148,16 +177,16 @@ mvc.ViewModel = {
        icon: image,
        map: map
      });
+     //
+     // if somebody clicks on this player, jump to that player (center map, panTo)
      mvc.controller.playerRegister(playerMarker, id);
      markersArray.push(playerMarker);
-     //console.log("addMarker",latlng);
    },
 
+   /**
+   * add the fan blue dot
+   */
    addFan: function (latlng, id) {
-     //pixelSize = preferences.markerIconScaled;
-     //var zoom = map.getZoom();
-     //relativePixelSize = Icon2ZoomSize(zoom);
-     //console.log("Rel Pix", pixelSize);
      var image = {
        url: id.photo,
      }
@@ -167,10 +196,10 @@ mvc.ViewModel = {
        icon: image,
        map: map
      });
-    //  mvc.controller.playerRegister(playerMarker, id);
-    //  markersArray.push(playerMarker);
-     //console.log("addMarker",latlng);
+    // the fan marker so I can delete it when I change views
+    markersArray.push(fanMarker);
    },
+
    // removes overlays from the map
    clearOverlays: function () {
      if (markersArray) {
@@ -199,22 +228,12 @@ mvc.ViewModel = {
      }
    },
 
+   // this might be wrong but: delete all the features from the map
    deleteLayerOverlays: function() {
      console.log(map.data.length);
      map.data.forEach(function(feature) {
       //filter...
        map.data.remove(feature);
-});
-
-     // if (layersArray) {
-     //   for (j=0; j<layersArray.length; j++) {
-     //     //console.log(layersArray[j]);
-     //     var it = layersArray[j];
-     //     console.log(it, it.getType());
-     //     //map.data.remove();
-     //   }
-     //   layersArray.length = 0;
-     // }
+     });
    }
-
 }

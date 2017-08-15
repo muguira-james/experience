@@ -1,3 +1,7 @@
+/**
+* all the functions here are global to the entire program
+*/
+
 // get radian of input degree
 toRad = function(n) {
    var z = n* Math.PI / 180;
@@ -10,7 +14,7 @@ toDeg = function(n) {
    return n * 180 / Math.PI;
 };
 
-// returns a point bearing, radius from latlng
+// returns a point that has been solved to be bearing, radius from input latlng
 destinationPoint = function(latlng, brng, dist) {
 
    dist = dist / 6371;
@@ -35,6 +39,10 @@ destinationPoint = function(latlng, brng, dist) {
    return pt;
 };
 
+/**
+* helper function to encode the size of the icons
+*  hides these numbers in this spot
+*/
 var Icon2ZoomSize = function(z) {
   switch(z) {
     case 14: { return 130; break; }
@@ -45,6 +53,12 @@ var Icon2ZoomSize = function(z) {
     case 19: { return 100; break; }ß
   }
 };
+
+/**
+* find the max, min of the mask lat and the lng
+*
+* use that to compute a bounding box around the mask
+*/
 var computeBounds4Hole = function(c) {
   var minLat = 1000, maxLat = -1000, minLng = 1000, maxLng = -1000;
   for (j=0; j<c.length; j++) {
@@ -78,6 +92,9 @@ var computeBounds4Hole = function(c) {
   return m;
 };
 
+/**
+* hide these values here
+*/
 var CurrentViewId = {
   COURSE_VIEW: 0,
   DEFAULT_VIEW: 1,
@@ -91,11 +108,16 @@ var CurrentViewId = {
   }
 };
 
-
+/**
+* may not be used !!!
+*/
 var InfoObject = function() {
 
 };
 
+/**
+* hide global prefereneces here
+*/
 var preferences = {
 
   "TrumpNationLatLng": {lat: 40.65382, lng: -74.69614},
@@ -106,5 +128,8 @@ var preferences = {
   "flagSize": 90,
   "flagAnchorPoint": 45,
   "markerIconAnchor": 119,
-  "markerIconScaled": 130
+  "markerIconScaled": 130,
+  "teeOffset": 90,
+  "fairwayOffset": 90,
+  "greenOffset": 90
 }

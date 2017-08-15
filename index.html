@@ -19,11 +19,20 @@
   </head>
   <body>
 
-
+    <!-- This div holds the map -->
     <div id="mapid"></div>
 
 
     <script>
+      /**
+        * these variables are global to the program.
+        * markersArray is used to hold the player markers.  I push players into this and pop them
+        *   out to delete them from a visible layer.
+        * layersArray is used to hold the different bits of geometry.  In this, case the
+        *   mask that I use to high light the hole boundries
+        * map is the map.  i.e. the goole map object
+        * mvc is my way of keeping the ViewModel, ControllerModel, playerdb and holedb organized
+        */
       var markersArray = [];
       var layersArray = [];
       var map;
@@ -31,6 +40,7 @@
 
     </script>
 
+  
     <script src="js/models/utils.js"></script>
     <script src="js/ViewModel/ViewModel.js"></script>
     <script src="js/ViewModel/UserViews.js"></script>
@@ -47,7 +57,9 @@
 
 
 
-      //
+      /**
+      * this is driven after the rest of the html has been rendered (async, defer)
+      */
       function initMap() {
         var useragent = navigator.userAgent;
         var mapdiv = document.getElementById("map");
@@ -62,24 +74,27 @@
          //mapdiv.style.height = '800px';
         }
         console.log(preferences);
+        /**
+        * set some specific parameters
+        */
         mvc.ViewModel.setMapCenter(preferences.TrumpNationLatLng);
         mvc.ViewModel.setCurrentView(CurrentViewId.DEFAULT_VIEW);
+        /**
+        * init the map inside the mvc
+        */
         mvc.ViewModel.initMap();
         preferences.markerIconAnchorSize = new google.maps.Point(1, preferences.markerIconAnchor);
         preferences.markerIconScaledSize = new google.maps.Size(preferences.markerIcon, preferences.markerIcon);
-        var id = { "photo": "./images/Fan.png" }
-        mvc.ViewModel.addFan(preferences.TrumpNationLatLng, id)
         map.setZoom(18);
+        //
+        // set more parameters and them force the right view to be drawn
         mvc.ViewModel.setZoomLevel(18);
         mvc.controller.registerView();
         mvc.ViewModel.DrawView();
       }
 
-
-      // console.log(JSON.stringify(holeLatLong,null, 4));
     </script>
 
-    <!-- <script src="js/models/utils.js"></script>  -->
 
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg2L3FSio2Ta-n-9L3sCMsBYziMflOFkY&callback=initMap&libraries=geometry">
