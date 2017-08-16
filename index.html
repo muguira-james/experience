@@ -16,12 +16,6 @@
       /*body { margin:0; padding:0; width: 100%; height: 100% }
       #mapid { position:absolute; top:0; bottom:0 right: 0; left: 0 }*/
     </style>
-  </head>
-  <body>
-
-    <!-- This div holds the map -->
-    <div id="mapid"></div>
-
 
     <script>
       /**
@@ -40,7 +34,7 @@
 
     </script>
 
-  
+
     <script src="js/models/utils.js"></script>
     <script src="js/ViewModel/ViewModel.js"></script>
     <script src="js/ViewModel/UserViews.js"></script>
@@ -48,14 +42,9 @@
 
     <script src="js/models/playerdb_1.js"></script>
     <script src="js/models/trumpbedminster.js"></script>
-    <!-- <script src="js/models/holeLocations_2017_1.js"></script> -->
-    <!-- <p id="here">
-      //
-    </p> -->
+
 
     <script>
-
-
 
       /**
       * this is driven after the rest of the html has been rendered (async, defer)
@@ -99,5 +88,14 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDg2L3FSio2Ta-n-9L3sCMsBYziMflOFkY&callback=initMap&libraries=geometry">
   </script>
+
+  </head>
+  <body>
+
+    <!-- This div holds the map -->
+    <div id="mapid"></div>
+
+
+
   </body>
 </html>
